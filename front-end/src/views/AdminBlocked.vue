@@ -9,14 +9,11 @@
       <div class="form">
         <input v-model="title" placeholder="Title">
         <p></p>
-        <input v-model="description" placeholder="Description" />
-        <p></p>
         <input type="file" name="photo" @change="fileChanged">
         <button @click="upload">Upload</button>
       </div>
       <div class="upload" v-if="addItem">
         <h2>{{addItem.title}}</h2>
-        <h2>{{addItem.description}}</h2>
         <img :src="addItem.path" />
       </div>
     </div>
@@ -35,13 +32,10 @@
       <div class="upload" v-if="findItem">
         <input v-model="findItem.title">
         <p></p>
-        <textarea v-model="findItem.description"/>
-        <p></p>
         <img :src="findItem.path" />
       </div>
       <div class="actions" v-if="findItem">
         <button @click="deleteItem(findItem)">Delete</button>
-        <button @click="editItem(findItem)">Edit</button>
       </div>
     </div>
 
@@ -125,7 +119,6 @@ export default {
     data() {
     return {
       title: "",
-      description: "",
       file: null,
       addItem: null,
       items: [],
@@ -139,11 +132,12 @@ export default {
       return items.sort((a, b) => a.title > b.title);
     }
   },
+
+  created() {
+    this.getItems();
+  },
+
   methods: {
-    selectItem(item) {
-      this.findTitle = "";
-      this.findItem = item;
-    },
     fileChanged(event) {
       this.file = event.target.files[0]
     },
@@ -154,8 +148,7 @@ export default {
         let r1 = await axios.post('/api/photos', formData);
         let r2 = await axios.post('/api/items', {
           title: this.title,
-          path: r1.data.path,
-          description:this.description,
+          path: r1.data.path
         });
         this.addItem = r2.data;
       } catch (error) {
@@ -168,8 +161,12 @@ export default {
         this.items = response.data;
         return true;
       } catch (error) {
-        console.log(error);
+      console.log(error);
       }
+    },
+    selectItem(item) {
+      this.findTitle = "";
+      this.findItem = item;
     },
     async deleteItem(item) {
       try {
@@ -181,24 +178,8 @@ export default {
         console.log(error);
       }
     },
-    async editItem(item) {
-      try {
-        await axios.put("/api/items/" + item._id, {
-          title: this.findItem.title,
-          description: this.findItem.description,
-        });
-        this.findItem = null;
-        this.getItems();
-        return true;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-  },
-  created() {
-    this.getItems();
-  },
-};
+  }
+}
 </script>
 
 
