@@ -4,7 +4,8 @@
     <div class="image" v-for="item in items" :key="item.id">
       <h2>{{item.title}}</h2>
       <img :src="item.path" />
-      <h6>{{item.description}}</h6>
+      <h5>{{item.description}}</h5>
+      <p><br></p>
     </div>
   </section>
 </div>
@@ -56,12 +57,19 @@ export default {
 
 .image-gallery {
   column-gap: 1.5em;
+  background: #e3e3e3;
 }
 
 .image {
   margin: 0 0 1.5em;
   display: inline-block;
+  height: 100px;
   width: 100%;
+  margin: 15px;
+  margin-right: 15px;
+  margin-left: 15px;
+  padding: 15px;
+  
 }
 
 .image img {
