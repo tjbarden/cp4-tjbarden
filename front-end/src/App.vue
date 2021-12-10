@@ -26,7 +26,7 @@
   </div>
   <div class="footer">
     <router-link to="/admin">Admin</router-link>
-    <p>TJ Barden  - <a target="blank" class="github-link" href="https://github.com/BYUCS260/museum-tjbarden">Github Repository</a></p>
+    <p>TJ Barden  - <a target="blank" class="github-link" href="https://github.com/tjbarden/cp4-tjbarden">Github Repository</a></p>
     <p></p>
   </div>
 </div>
