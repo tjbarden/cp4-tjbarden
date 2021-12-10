@@ -1,13 +1,24 @@
 <template>
 <div id="app">
   <div class="header">
-    <router-link to="/">
+    <router-link id="racquet" to="/">
       <div class="logo">
-        <img src="/ordinary.png">
+        <img src="/racquet_icon.png">
       </div>
     </router-link>
-    <div class="title">
-      <h1>Museum of Ordinary Objects</h1>
+      <div class="title">
+        <h1>Barden Tennis Inc.</h1>
+      </div>
+    <div id="menu">
+        <router-link id="about" to="/about">
+          <p>About</p>
+        </router-link>
+        <router-link id="shop" to="/shop">
+          <p>Shop</p>
+        </router-link>
+        <router-link id="cart" to="/cart">
+          <p>Cart ({{cartSize}})</p>
+        </router-link>  
     </div>
   </div>
   <div class="content">
@@ -21,7 +32,31 @@
 </div>
 </template>
 
+<script>
+export default {
+  computed: {
+    totalItems() {
+      var totalItems = 0;
+      console.log(totalItems);
+      return totalItems;
+    },
+    cartSize() {
+      return this.$root.$data.cart.length;
+    }
+  }
+}
+</script>
+
+
+
 <style>
+
+.logo img {
+  width: 80%;
+  color: #fff;
+  filter: grayscale(100%);
+  margin: 15px;
+}
 html {
   box-sizing: border-box;
 }
@@ -38,12 +73,60 @@ body {
 .header {
   display: flex;
   padding: 10px 100px 0px 100px;
-  background-color: #5BDEFF;
-  color: #1C454F;
+  color: #fff;
+  background-color: #1C454F;
+}
+
+#racquet {
+  width: 10%;
+}
+
+#menu {
+  margin-left: 45%;
+  width: 100px;
+  display: flex !important;
+  justify-content: right;
+  flex-direction: row;
+  color: #fff !important;
+}
+
+.menu-item {
+  flex-direction: column;
+  color: #fff !important;
+}
+
+a {
+  color: #fff;
+}
+
+#cart {
+  width: 100px;
+  margin-left: clamp(15px, 5vw, 50px);
+}
+
+#shop {
+  width: 100px;
+  margin-left: clamp(15px, 5vw, 50px);
+}
+
+#cart p {
+  text-align: center;
+}
+
+#side {
+  grid-area: side;
+  display: flex;
+  align-items: right;
+  margin-right: 20px;
+  margin-top: 10px;
+}
+#side img {
+  width: 30px;
 }
 
 .title {
   margin-top: 5px;
+  margin-left: 20px;
 }
 
 .title h1 {

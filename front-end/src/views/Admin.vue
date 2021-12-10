@@ -11,6 +11,9 @@
           <input v-model="title" placeholder="Title" />
         </div>
         <div>
+          <input v-model="price" placeholder="Price" />
+        </div>
+        <div>
           <input v-model="description" placeholder="Description" />
         </div>
         <p></p>
@@ -19,6 +22,7 @@
       </div>
       <div class="upload" v-if="addItem">
         <h2>{{ addItem.title }}</h2>
+        <h2>{{ addItem.price }}</h2>
         <h2>{{ addItem.description }}</h2>
         <img :src="addItem.path" />
       </div>
@@ -47,6 +51,9 @@
           <input v-model="findItem.title" />
         </div>
         <div>
+          <input v-model="findItem.price" />
+        </div>
+        <div>
           <textarea v-model="findItem.description" />
         </div>
         <p></p>
@@ -68,6 +75,7 @@ export default {
   data() {
     return {
       title: "",
+      price: "",
       description: "",
       file: null,
       addItem: null,
@@ -84,23 +92,12 @@ export default {
       return items.sort((a, b) => a.title > b.title);
     },
   },
+  created() {
+    this.getItems();
+  },
   methods: {
-    selectItem(item) {
-      this.findTitle = "";
-      this.findItem = item;
-    },
     fileChanged(event) {
       this.file = event.target.files[0];
-    },
-    async deleteItem(item) {
-      try {
-        await axios.delete("/api/items/" + item._id);
-        this.findItem = null;
-        this.getItems();
-        return true;
-      } catch (error) {
-        console.log(error);
-      }
     },
     async upload() {
       try {
@@ -109,24 +106,12 @@ export default {
         let r1 = await axios.post("/api/photos", formData);
         let r2 = await axios.post("/api/items", {
           title: this.title,
-          path: r1.data.path,
+          price: this.price,
           description: this.description,
+          path: r1.data.path,
         });
         this.addItem = r2.data;
-      } catch (error) {
-        console.log(error);
-      }
-      this.getItems();
-    },
-    async editItem(item) {
-      try {
-        await axios.put("/api/items/" + item._id, {
-          title: this.findItem.title,
-          description: this.findItem.description,
-        });
-        this.findItem = null;
-        this.getItems();
-        return true;
+        console.loog(this.addItem)
       } catch (error) {
         console.log(error);
       }
@@ -140,9 +125,34 @@ export default {
         console.log(error);
       }
     },
-  },
-  created() {
-    this.getItems();
+    selectItem(item) {
+      this.findTitle = "";
+      this.findItem = item;
+    },
+    async deleteItem(item) {
+      try {
+        await axios.delete("/api/items/" + item._id);
+        this.findItem = null;
+        this.getItems();
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async editItem(item) {
+      try {
+        await axios.put("/api/items/" + item._id, {
+          title: this.findItem.title,
+          price: this.findItem.price,
+          description: this.findItem.description,
+        });
+        this.findItem = null;
+        this.getItems();
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 };
 </script>
